@@ -6,10 +6,10 @@ import Adafruit_DHT as dht
 import Adafruit_BMP.BMP085 as BMP085 # Imports the BMP library
 
 
-# My ThingSpeak API key 
-myAPI = 'WIF55E621FNQEH7L'
-# My Thingtweet API key
-tweetAPI = 'UL5RJC37HB2N67LU'
+# My ThingSpeak API key ( you need to replace it with your key )
+myAPI = 'WIF55E621FNCEH7L'
+# My Thingtweet API key ( you need to replace it with your key )
+tweetAPI = 'UL5RJC37HA2N67LU'
 
 # URL where we will send the data
 baseURL = 'https://api.thingspeak.com/update?api_key=%s' % myAPI 
@@ -17,8 +17,8 @@ baseURL = 'https://api.thingspeak.com/update?api_key=%s' % myAPI
 tweetURL = 'https://api.thingspeak.com/apps/thingtweet/1/statuses/update/'   
 tweetForm = "The Weather Status : Temprature = %s , Humidity = %s , Pressure = %s , SeaLevel Pressure = %s and The Altitude = %s "
 
+# Reading from BMP sensor 
 sensor = BMP085.BMP085()
-
 def BMP180_data():
     pres = float(format(sensor.read_pressure()))  # The local pressure
     slpres = float(format(sensor.read_sealevel_pressure())) # The sea-level pressure
@@ -26,12 +26,12 @@ def BMP180_data():
   
     return pres,slpres,alt
 
-
+# Reading from DHT sensor 
 def DHT22_data():
     # Reading from DHT22 and storing the temperature and humidity
     humi, temp = dht.read_retry(dht.DHT22, 23) 
     return humi, temp
-
+# Reading the values, Upload and Tweet it 
 while True:
     try:
         humi, temp = DHT22_data()
@@ -61,7 +61,7 @@ while True:
         else:
             print ('Error')
 
-        
+ # sleeping time in seconds between the results ( you can change it as you want )        
         sleep(10)
 
     except:
